@@ -1,0 +1,308 @@
+API:
+1. Register (User):
+POST http://localhost:8080/api/auth/register
+Content-Type application/json
+{
+    "username":"Suneelvj",
+    "password":"abcd",
+    "email":"suneelvj023@gmail.com",
+    "fullName":"Suneelvijay M"
+}
+
+2. Verify EMAIL when register:
+POST http://localhost:8080/api/auth/verify-email
+Content-Type application/json
+{
+    "email": "suneelvj023@gmail.com",
+    "otp": "752104"
+}
+
+3. Login (Common for all roles)
+http://localhost:8080/api/auth/login
+Content-Type application/json
+{
+    "username":"dealer1",
+    "password":"dealerpass123"
+}
+
+4. Verify email otp when login
+POST http://localhost:8080/api/auth/verify-login
+Content-Type application/json
+{
+    "email": "suneelvj023@gmail.com",
+    "otp": 101517
+}
+
+5. Logout (common for all roles)
+POST http://localhost:8080/api/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+{
+}
+
+USER:
+View Profile:
+GET http://localhost:8080/api/user/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+
+View Vehicles:
+POST http://localhost:8080/api/vehicles/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+
+{
+    "page": 0,
+    "size": 5
+}
+Search Vehicle:
+POST http://localhost:8080/api/vehicles/search
+Content-Type: application/json
+Authorization: Bearer {your_jwt_token}
+
+{
+    "searchTerm": "car",
+    "page": 0,
+    "size": 10
+}
+Filter by type - Not working
+POST http://localhost:8080/api/vehicles/type
+Content-Type: application/json
+Authorization: Bearer {your_jwt_token}
+
+{
+    "type": "CAR",
+    "page": 0,
+    "size": 10
+}
+
+Create Test drive Request:
+POST http://localhost:8080/api/user/test-drive
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+{
+    "vehicleId": 1,
+    "requestedDate": "2024-03-23T10:00:00",
+    "notes": "Interested in testing the vehicle features"
+}
+View Test Drive Request - Status and History:
+GET http://localhost:8080/api/user/test-drive
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+
+{
+    "page": 0,
+    "size": 2
+}
+
+Cancel Test Drive request:
+PUT http://localhost:8080/api/user/test-drive/2/cancel
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+body none
+
+Create Quote Request:
+POST http://localhost:8080/api/user/quote
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+{
+    "vehicleId": 1,
+    "notes": "Interested in financing options"
+}
+
+View Quote Request history&status
+GET http://localhost:8080/api/user/quote
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+
+{
+    "page": 0,
+    "size": 5
+}
+
+Cancel Quote Request
+PUT http://localhost:8080/api/user/quote/1/cancel
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+body none
+
+ADMIN:
+View Profile
+Create Dealer:
+POST http://localhost:8080/api/user/dealer
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+{
+    "username": "dealer1",
+    "password": "dealerpass123",
+    "fullName": "Dealer One",
+    "email": "suneelvj023@gmail.com",
+    "dealershipName": "Best Cars Dealership",
+    "dealershipAddress": "123 Main St",
+    "phoneNumber": "1234567890"
+}
+View Users:
+GET http://localhost:8080/api/user/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+
+Update Status of Users:
+POST http://localhost:8080/api/user/status
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+
+{
+    "userId": 2,
+    "status": "DEACTIVATED"
+}
+
+Delete User:
+POST http://localhost:8080/api/user/delete
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+
+{
+    "userId": 2
+}
+
+CREATE Vehicle:
+POST http://localhost:8080/api/vehicles/create
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type multipart/form-data; boundary=<calculated when request is sent>
+key	type	value
+image 	file 	upload
+name	Text	"Test Vehicle"
+description Text "Test Desription"
+fuelType	Text	"ELECTRIC"
+color	Text	"BLUE"
+price	Text	25000.00
+type	Text	SUV
+
+View Vehicles:
+GET http://localhost:8080/api/vehicles/list
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+body:
+{
+    "page": 0,
+    "size": 2
+}
+
+Search Vehicle (Search bar):
+POST http://localhost:8080/api/vehicles/search
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+body:
+{
+    "searchTerm": "EV",
+    "page": 0,
+    "size": 3
+}
+Filter by type:
+POST http://localhost:8080/api/vehicles/search
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+body:
+{
+    "type": "SEDAN",
+    "page": 0,
+    "size": 3
+}
+
+Update Vehicle details:
+POST http://localhost:8080/api/vehicles/update
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+body:
+{
+    "id": 1, 
+    "vehicle": {
+        "name": "Updated Vehicle Name",
+        "description": "Updated Description",
+        "fuelType": "DIESEL",
+        "color": "BLUE",
+        "price": 30000.00,
+        "type": "SUV"
+    }
+}
+
+Update Vehicle with Image:
+POST http://localhost:8080/api/vehicles//update-with-image
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type multipart/form-data; boundary=<calculated when request is sent>
+body:
+id: 1
+name: Updated Vehicle Name
+description: Updated Description
+fuelType: DIESEL
+color: BLUE
+price: 30000.00
+type: SUV
+image 	file 	upload
+
+Download EXCEL - test drive request
+GET http://localhost:8080/api/admin/test-drives/download
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+body none
+
+View Test Drive Request -- No pagination has been implemented
+GET http://localhost:8080/api/admin/test-drive-requests
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+body none
+
+View Quote Request: -- No pagination has been implemented
+GET http://localhost:8080/api/admin/quote-requests
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+body none
+
+DEALER:
+View Profile:
+GET http://localhost:8080/api/dealer/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+
+Update Profile:
+POST http://localhost:8080/api/dealer/profile/update
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+{
+    "dealershipName": "Updated Dealership",
+    "dealershipAddress": "456 New St",
+    "phoneNumber": "1234567890"
+}
+
+Change Password:
+POST http://localhost:8080/api/dealer/password/change
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+Content-Type application/json
+{
+    "newPassword": "newpass"
+}
+
+Download EXCEL - test drive request
+GET http://localhost:8080/api/admin/test-drives/download
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+body none
+
+View Test Drive Request -- No pagination has been implemented
+GET http://localhost:8080/api/admin/test-drive-requests
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+body none
+
+View Quote Request: -- No pagination has been implemented
+GET http://localhost:8080/api/admin/quote-requests
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+body none
+
+Update Test drive Request:
+PUT http://localhost:8080/api/admin/test-drive-requests/1/status?status=APPROVED
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.e
+body none
+
+Edits Required:
+Only dealer should access this, update the url, avoid passing parameters in url
+CANCELLED is only for user, Dealer cannot cancel, After cancel Dealer cannot update the status of the request
+
+Update Quote Request
+PUT http://localhost:8080/api/admin/quote-requests/2?quotedPrice=28000&adminResponse=Thank you for your interest. We cannot provide best price for the vehicle at the moment.&status=APPROVED&Auth
+
+Edits Required:
+Only dealer should access this, update the url, avoid passing parameters in url
+CANCELLED is only for user, Dealer cannot cancel, After cancel Dealer cannot update the status of the request
